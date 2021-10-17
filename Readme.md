@@ -14,3 +14,14 @@
     * There are no more remaining attributes.
     * There are no more instances.
    
+# Attribute Selection Measures
+Attribute Selection Measure is a heuristic for selecting the splitting criterion that partition data into the best possible manner.
+It's also known as splitting rules because it helps us to determine breakpoints for tuples on a given node.
+Best score attribute will be selected as a splitting attribute.<br>
+
+Most popular selection measures are following three methods:
+   * Information Gain
+   * Gain Ratio
+   * Gini Index
+
+   
