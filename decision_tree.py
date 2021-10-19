@@ -26,11 +26,14 @@ original_train = train_data.copy()
 full_data = [train_data, test_data]
 
 # feature that tells whether a passenger had a cabin on the titanic
-train_data["Has_Cabin"] = train_data["Cabin"].apply(lambda x: 0 if type(x) == float else 1)
-test_data["Has_Cabin"] = test_data["Cabin"].apply(lambda x: 0 if type(x) == float else 1)
+train_data["HasCabin"] = train_data["Cabin"].apply(lambda x: 0 if type(x) == float else 1)
+test_data["HasCabin"] = test_data["Cabin"].apply(lambda x: 0 if type(x) == float else 1)
 
-print(train_data["Parch"])
 # create new feature family size as a combination of sibsp and parch
 for dataset in full_data:
     dataset["FamilySize"] = dataset["SibSp"] + dataset["Parch"] + 1
 
+# create new feature IsAlone from FamilySize
+for dataset in full_data:
+    dataset["isAlone"] = 0
+    dataset.loc[dataset["FamilySize"] == 1, "isAlone"] = 1
