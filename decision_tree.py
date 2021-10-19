@@ -20,19 +20,12 @@ def dataset_splitter(data):
     return feature_cols
 
 
-# training data
-x_train = dataset_splitter(train_data)
-y_train = train_data["Survived"]
+# copy original dataset in case we need it latter
+original_train = train_data.copy()
 
-print(x_train[0])
-# test data
-x_test = dataset_splitter(test_data)
+full_data = [train_data, test_data]
 
-# create decision tree classifier object
-classifier = DecisionTreeClassifier()
+# feature that tells whether a passenger had a cabin on the titanic
+train_data["Has_Cabin"] = train_data["Cabin"].apply(lambda x: 0 if type(x) == float else 1)
+test_data["Has_Cabin"] = test_data["Cabin"].apply(lambda x: 0 if type(x) == float else 1)
 
-# train decision tree classifier
-# classifier = classifier.fit(x_train, y_train)
-
-# predict the response for test dataset
-# y_prediction = classifier.predict(x_test)
