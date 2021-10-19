@@ -33,7 +33,18 @@ test_data["HasCabin"] = test_data["Cabin"].apply(lambda x: 0 if type(x) == float
 for dataset in full_data:
     dataset["FamilySize"] = dataset["SibSp"] + dataset["Parch"] + 1
 
-# create new feature IsAlone from FamilySize
+# create new feature isAlone from FamilySize
 for dataset in full_data:
     dataset["isAlone"] = 0
     dataset.loc[dataset["FamilySize"] == 1, "isAlone"] = 1
+
+
+# Remove all NULLS in the Embarked column
+for dataset in full_data:
+    dataset["Embarked"] = dataset["Embarked"].fillna("S")
+
+# Remove all NULLS in the Fare column value is "median of train_data fare"
+for dataset in full_data:
+    dataset["Fare"] = dataset["Fare"].fillna(train_data["Fare"].median())
+
+
