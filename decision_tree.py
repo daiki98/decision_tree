@@ -29,3 +29,8 @@ full_data = [train_data, test_data]
 train_data["Has_Cabin"] = train_data["Cabin"].apply(lambda x: 0 if type(x) == float else 1)
 test_data["Has_Cabin"] = test_data["Cabin"].apply(lambda x: 0 if type(x) == float else 1)
 
+print(train_data["Parch"])
+# create new feature family size as a combination of sibsp and parch
+for dataset in full_data:
+    dataset["FamilySize"] = dataset["SibSp"] + dataset["Parch"] + 1
+
