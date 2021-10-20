@@ -1,5 +1,6 @@
 # Load libraries
 import pandas as pd
+import numpy as np
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.model_selection import train_test_split
 from sklearn import metrics
@@ -46,5 +47,15 @@ for dataset in full_data:
 # Remove all NULLS in the Fare column value is "median of train_data fare"
 for dataset in full_data:
     dataset["Fare"] = dataset["Fare"].fillna(train_data["Fare"].median())
+
+# Remove all NULLS in the Age column
+for dataset in full_data:
+    age_avg = dataset['Age'].mean()
+    age_std = dataset['Age'].std()
+    age_null_count = dataset['Age'].isnull().sum()
+    age_null_random_list = np.random.randint(age_avg - age_std, age_avg + age_std, size=age_null_count)
+
+    dataset.loc[np.isnan(dataset['Age']), 'Age'] = age_null_random_list
+    dataset['Age'] = dataset['Age'].astype(int)
 
 
