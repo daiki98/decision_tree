@@ -1,4 +1,6 @@
 # Load libraries
+import re
+
 import pandas as pd
 import numpy as np
 from sklearn.tree import DecisionTreeClassifier
@@ -62,5 +64,8 @@ for dataset in full_data:
     dataset['Age'] = dataset['Age'].astype(int)
 
 
+# Define function to extract titles from passenger name
+def get_title(name):
+    title_search = re.search(' ([A-Za-z]+)\.', name)
 
 
