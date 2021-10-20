@@ -50,12 +50,17 @@ for dataset in full_data:
 
 # Remove all NULLS in the Age column
 for dataset in full_data:
+
     age_avg = dataset['Age'].mean()
     age_std = dataset['Age'].std()
     age_null_count = dataset['Age'].isnull().sum()
     age_null_random_list = np.random.randint(age_avg - age_std, age_avg + age_std, size=age_null_count)
 
+    # np.isnan: If null is included, return true
     dataset.loc[np.isnan(dataset['Age']), 'Age'] = age_null_random_list
+    # astype: change type to int
     dataset['Age'] = dataset['Age'].astype(int)
+
+
 
 
