@@ -66,6 +66,33 @@ for dataset in full_data:
 
 # Define function to extract titles from passenger name
 def get_title(name):
-    title_search = re.search(' ([A-Za-z]+)\.', name)
+    title_search = re.search(" ([A-Za-z]+)\.", name)
+    # If the title exists, extract and return it.
+    if title_search:
+        return title_search.group(1)
+    return ""
 
+for dataset in full_data:
+    dataset["Title"] = dataset["Name"].apply(get_title)
+
+# Group all non-common titles into one single grouping "Rare"
+for dataset in full_data:
+    dataset["Title"] = dataset["Title"].replace(["Lady", "Countess", "Capt", "Col", "Don", "Dr", "Major", "Rev",
+                                                "Sir", "Jonkheer", "Dona"], "Rare")
+
+    dataset["Title"] = dataset["Title"].replace("Mlle", "Miss")
+    dataset["Title"] = dataset["Title"].replace("Ms", "Miss")
+    dataset["Title"] = dataset["Title"].replace("Mme", "Mrs")
+
+
+for dataset in full_data:
+    # Mapping Sex
+    dataset["Sex"] = dataset["Sex"].map( {"female": 0, "male": 1}).astype(int)
+
+    # Mapping titles
+    title_mapping = {"Mr": 1, "Master": 2, "Mrs": 3, "Miss": 4, "Rare": 5}
+    dataset["Title"] = dataset["Title"].map(title_mapping)
+    dataset["Title"] = dataset["Title"].fillna(0)
+
+    # Mapping Embarked
 
