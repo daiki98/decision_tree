@@ -95,4 +95,7 @@ for dataset in full_data:
     dataset["Title"] = dataset["Title"].fillna(0)
 
     # Mapping Embarked
+    dataset["Embarked"] = dataset["Embarked"].map( {"S": 0, "C": 1, "Q": 2} ).astype(int)
+
+    # Mapping Fare
 
