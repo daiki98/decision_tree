@@ -72,6 +72,7 @@ def get_title(name):
         return title_search.group(1)
     return ""
 
+
 for dataset in full_data:
     dataset["Title"] = dataset["Name"].apply(get_title)
 
@@ -104,5 +105,10 @@ for dataset in full_data:
     dataset.loc[dataset["Fare"] > 31, "Fare"] = 3
     dataset["Fare"] = dataset["Fare"].astype(int)
 
-
+    # Mapping Age
+    dataset.loc[dataset["Age"] <= 16, "Age"] = 0
+    dataset.loc[(dataset["Age"] > 16) & (dataset["Age"] <= 32), "Age"] = 1
+    dataset.loc[(dataset["Age"] > 32) & (dataset["Age"] <= 48), "Age"] = 2
+    dataset.loc[(dataset["Age"] > 48) & (dataset["Age"] <= 64), "Age"] = 3
+    dataset.loc[dataset["Age"] > 64, "Age"]
 
