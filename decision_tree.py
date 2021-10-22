@@ -112,3 +112,7 @@ for dataset in full_data:
     dataset.loc[(dataset["Age"] > 48) & (dataset["Age"] <= 64), "Age"] = 3
     dataset.loc[dataset["Age"] > 64, "Age"]
 
+    # Feature selection: remove variables no longer containing relevant information
+    drop_elements = ['PassengerId', 'Name', 'Ticket', 'Cabin', 'SibSp']
+    train_data = train_data.drop(drop_elements, axis=1)
+    test_data = test_data.drop(drop_elements, axis=1)
