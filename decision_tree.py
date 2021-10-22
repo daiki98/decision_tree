@@ -1,8 +1,9 @@
 # Load libraries
 import re
-
+import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
+import seaborn as sns
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.model_selection import train_test_split
 from sklearn import metrics
@@ -124,3 +125,9 @@ drop_elements = ['PassengerId', 'Name', 'Ticket', 'Cabin', 'SibSp']
 variable_remover(drop_elements, train_data)
 variable_remover(drop_elements, test_data)
 
+color_map = plt.cm.viridis
+plt.figure(figsize=(12, 12))
+plt.title("Person Correlation of Features", y=1.05, size=15)
+# what is sns.heatmap => notion
+sns.heatmap(train_data.astype(float).corr(), linewidths=0.1, vmax=1.0, square=True, cmap=color_map, linecolor='white',
+            annot=True)
