@@ -23,6 +23,13 @@ def dataset_splitter(data):
     return feature_cols
 
 
+# remove variables from dataset
+def variable_remover(label_list, data):
+    for label in label_list:
+        data = data.drop(label, axis=1)
+    return data
+
+
 # copy original dataset in case we need it latter
 original_train = train_data.copy()
 
@@ -112,7 +119,8 @@ for dataset in full_data:
     dataset.loc[(dataset["Age"] > 48) & (dataset["Age"] <= 64), "Age"] = 3
     dataset.loc[dataset["Age"] > 64, "Age"]
 
-    # Feature selection: remove variables no longer containing relevant information
-    drop_elements = ['PassengerId', 'Name', 'Ticket', 'Cabin', 'SibSp']
-    train_data = train_data.drop(drop_elements, axis=1)
-    test_data = test_data.drop(drop_elements, axis=1)
+# Feature selection: remove variables no longer containing relevant information
+drop_elements = ['PassengerId', 'Name', 'Ticket', 'Cabin', 'SibSp']
+variable_remover(drop_elements, train_data)
+variable_remover(drop_elements, test_data)
+
