@@ -122,8 +122,8 @@ for dataset in full_data:
 
 # Feature selection: remove variables no longer containing relevant information
 drop_elements = ['PassengerId', 'Name', 'Ticket', 'Cabin', 'SibSp']
-variable_remover(drop_elements, train_data)
-variable_remover(drop_elements, test_data)
+train_data = variable_remover(drop_elements, train_data)
+test_data = variable_remover(drop_elements, test_data)
 
 color_map = plt.cm.viridis
 plt.figure(figsize=(12, 12))

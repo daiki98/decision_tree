@@ -24,6 +24,9 @@ Most popular selection measures are following three methods:
    * Gain Ratio
    * Gini Index
 
-# 
+# What is seaborn?
+* summarized in notion<br>
+https://www.notion.so/seaborn-heatmap-ba13f6064d6f4bd9afee54cf73ffed2f
+
 
    
