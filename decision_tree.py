@@ -129,5 +129,6 @@ color_map = plt.cm.viridis
 plt.figure(figsize=(12, 12))
 plt.title("Person Correlation of Features", y=1.05, size=15)
 # what is sns.heatmap => notion
-sns.heatmap(train_data.astype(float).corr(), linewidths=0.1, vmax=1.0, square=True, cmap=color_map, linecolor='white',
-            annot=True)
+sns.heatmap(train_data.astype(float).corr(), linewidths=0.1, vmax=1.0, square=True, cmap=color_map,
+                       linecolor='white', annot=True)
+plt.show()
