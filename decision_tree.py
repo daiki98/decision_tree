@@ -118,7 +118,7 @@ for dataset in full_data:
     dataset.loc[(dataset["Age"] > 16) & (dataset["Age"] <= 32), "Age"] = 1
     dataset.loc[(dataset["Age"] > 32) & (dataset["Age"] <= 48), "Age"] = 2
     dataset.loc[(dataset["Age"] > 48) & (dataset["Age"] <= 64), "Age"] = 3
-    dataset.loc[dataset["Age"] > 64, "Age"]
+    dataset.loc[dataset["Age"] > 64, "Age"] = 4
 
 # Feature selection: remove variables no longer containing relevant information
 drop_elements = ['PassengerId', 'Name', 'Ticket', 'Cabin', 'SibSp']
@@ -129,6 +129,31 @@ color_map = plt.cm.viridis
 plt.figure(figsize=(12, 12))
 plt.title("Person Correlation of Features", y=1.05, size=15)
 # what is sns.heatmap => notion
-sns.heatmap(train_data.astype(float).corr(), linewidths=0.1, vmax=1.0, square=True, cmap=color_map,
-                       linecolor='white', annot=True)
-plt.show()
+sns.heatmap(train_data.astype(float).corr(), linewidths=0.1, vmax=1.0, square=True, cmap=color_map, linecolor='white',
+            annot=True)
+# plt.show()
+
+
+# Since "Survived is a binary class, these metrics grouped by the Title feature represent:
+# MEAN: survival rate
+# COUNT: total observations
+# SUM: people survived
+
+# title_mapping = {"Mr": 1, "Miss": 2, "Mrs": 3, "Master": 4, "Rare": 5}
+# print(train_data[["Title", "Survived"]].groupby(["Title"], as_index=False).agg(["mean", "count", "sum"]))
+
+# sex_mapping = {{'female': 0, 'male': 1}}
+# print(train_data[['Sex', 'Survived']].groupby(['Sex'], as_index=False).agg(['mean', 'count', 'sum']))
+
+
+# I use copy() again to prevent modifications in out original_train dataset
+title_and_sex = original_train.copy()[['Name', 'Sex']]
+
+# Create 'Title' feature
+title_and_sex['Title'] = title_and_sex['Name'].apply(get_title)
+
+# Map 'Sex' as binary feature
+title_and_sex['Sex'] = title_and_sex['Sex'].map( {'female': 0, 'male': 1} ).astype(int)
+
+# Table with 'Sex' distribution grouped by 'Title'
+# print(title_and_sex[['Title', 'Sex']].groupby(['Title'], as_index=False).agg(['mean', 'count', 'sum']))
