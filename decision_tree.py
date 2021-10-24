@@ -7,7 +7,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 
 import plotly.offline as py
-py.init_notebook_mode(connected=True)
+# py.init_notebook_mode(connected=True)
 import plotly.graph_objs as go
 import plotly.tools as tls
 
@@ -195,7 +195,7 @@ women_weight = 314 / 891
 weight_gini_impurity_sex_split = (gini_impurity_men * men_weight) + (gini_impurity_women * women_weight)
 
 sex_gini_decrease = weight_gini_impurity_sex_split - gini_impurity_starting_node
-print("sex_gini_decrease: " + str(sex_gini_decrease))
+# print("sex_gini_decrease: " + str(sex_gini_decrease))
 
 gini_impurity_title_1 = get_gini_impurity(81, 517)
 # print("gini_impurity_title_1: " + str(gini_impurity_title_1))
@@ -209,7 +209,7 @@ title_others_weight = 374 / 891
 weight_gini_impurity_title_split = (gini_impurity_title_1 * title_1_weight) + \
                                    (gini_impurity_title_others * title_others_weight)
 title_gini_decrease = weight_gini_impurity_title_split - gini_impurity_starting_node
-print("title_gini_decrease: " + str(title_gini_decrease))
+# print("title_gini_decrease: " + str(title_gini_decrease))
 
 # Desired number of Cross Validation folds
 cv = KFold(n_splits=10)
@@ -247,4 +247,37 @@ for depth in depth_range:
 df = pd.DataFrame({"Max Depth": depth_range, "Average Accuracy": accuracies})
 df = df[["Max Depth", "Average Accuracy"]]
 # print(df.to_string(index=False))
+
+# Create Numpy arrays of train, test and Survived dataframes to feed into our models
+y_train = train_data["Survived"]
+x_train = train_data.drop(["Survived"], axis=1).values
+x_test = test_data.values
+
+# Create Decision Tree with max_depth = 3
+decision_tree = tree.DecisionTreeClassifier(max_depth=3)
+decision_tree.fit(x_train, y_train)
+
+# Predicting results for test dataset
+y_pred = decision_tree.predict(x_test)
+submission = pd.DataFrame({
+    "PassengerId": 0,
+    "Survived": y_pred
+})
+submission.to_csv("submission.csv", index=False)
+
+# Export our trainded model as a .dot fole
+with open("tree1.dot", "w") as f:
+    f = tree.export_graphviz(decision_tree, out_file=f, max_depth=3, impurity=True,
+                             feature_names=list(train_data.drop(["Survived"], axis=1)), class_names=["Died", "Survived"],
+                             rounded=True, filled=True)
+
+# Convert .dot to .png to allow display in web notebook
+check_call(["dot", "-Tpng", "tree1.dot", "-o", "tree1.png"])
+
+# Annotating chart with PIL
+img = Image.open("tree1.png")
+draw = ImageDraw.Draw(img)
+draw.text((10, 0), "\"Title <= 1.5\" corresponds to \"Mr.\" title", (0, 0, 255))
+img.save("titanic_decision_tree_depth_3.png")
+PImage("titanic_decision_tree_depth_3.png")
 
