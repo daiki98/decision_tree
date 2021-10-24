@@ -1,12 +1,23 @@
 # Load libraries
-import re
-import matplotlib.pyplot as plt
-import pandas as pd
+# Imports needed for the script
 import numpy as np
+import pandas as pd
+import re
 import seaborn as sns
-from sklearn.tree import DecisionTreeClassifier
-from sklearn.model_selection import train_test_split
-from sklearn import metrics
+import matplotlib.pyplot as plt
+
+import plotly.offline as py
+py.init_notebook_mode(connected=True)
+import plotly.graph_objs as go
+import plotly.tools as tls
+
+from sklearn import tree
+from sklearn.metrics import accuracy_score
+from sklearn.model_selection import KFold
+from sklearn.model_selection import cross_val_score
+from IPython.display import Image as PImage
+from subprocess import check_call
+from PIL import Image, ImageDraw, ImageFont
 
 # load dataset
 train_data = pd.read_csv("../Dataset/titanic/train.csv")
@@ -170,13 +181,13 @@ def get_gini_impurity(survived_count, total_count):
 
 
 gini_impurity_starting_node = get_gini_impurity(342, 891)
-# print(gini_impurity_starting_node)
+# print("gini_impurity_starting_node" + str(gini_impurity_starting_node))
 
 gini_impurity_men = get_gini_impurity(109, 577)
-# print(gini_impurity_men)
+# print("gini_impurity_men: " + str(gini_impurity_men))
 
 gini_impurity_women = get_gini_impurity(233, 314)
-# print(gini_impurity_women)
+# print("gini_impurity_women: " + str(gini_impurity_women))
 
 # Gini impurity decrease if node is split by Sex
 men_weight = 577 / 891
@@ -184,6 +195,23 @@ women_weight = 314 / 891
 weight_gini_impurity_sex_split = (gini_impurity_men * men_weight) + (gini_impurity_women * women_weight)
 
 sex_gini_decrease = weight_gini_impurity_sex_split - gini_impurity_starting_node
-# print(sex_gini_decrease)
+print("sex_gini_decrease: " + str(sex_gini_decrease))
 
+gini_impurity_title_1 = get_gini_impurity(81, 517)
+# print("gini_impurity_title_1: " + str(gini_impurity_title_1))
 
+gini_impurity_title_others = get_gini_impurity(261, 374)
+# print("gini_impurity_title_others" + str(gini_impurity_title_others))
+
+# Gini Impurity decrease if node is split for observations with Title == 1 == Mr
+title_1_weight = 517 / 891
+title_others_weight = 374 / 891
+weight_gini_impurity_title_split = (gini_impurity_title_1 * title_1_weight) + \
+                                   (gini_impurity_title_others * title_others_weight)
+title_gini_decrease = weight_gini_impurity_title_split - gini_impurity_starting_node
+print("title_gini_decrease: " + str(title_gini_decrease))
+
+cv = KFold(n_splits=10)
+accuracies = list()
+max_attributes = len(list(test_data))
+depth_range = range(1, max_attributes + 1)
