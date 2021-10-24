@@ -211,7 +211,40 @@ weight_gini_impurity_title_split = (gini_impurity_title_1 * title_1_weight) + \
 title_gini_decrease = weight_gini_impurity_title_split - gini_impurity_starting_node
 print("title_gini_decrease: " + str(title_gini_decrease))
 
+# Desired number of Cross Validation folds
 cv = KFold(n_splits=10)
+
 accuracies = list()
 max_attributes = len(list(test_data))
 depth_range = range(1, max_attributes + 1)
+
+# Testing max_depths from 1 to max attributes
+# comment out prints for details about each Cross Validation pass
+for depth in depth_range:
+    fold_accuracy = []
+    tree_model = tree.DecisionTreeClassifier(max_depth=depth)
+    # print("Current max depth: ", depth, "\n")
+    for train_fold, valid_fold in cv.split(train_data):
+        # Extract train data with cv indices
+        f_train = train_data.loc[train_fold]
+        # Extract valid data with cv indices
+        f_valid = train_data.loc[valid_fold]
+
+        # I fit the model with the fold train data
+        model = tree_model.fit(X=f_train.drop(["Survived"], axis=1), y=f_train["Survived"])
+
+        # I calculate accuracy with the fold validation data
+        valid_acc = model.score(X=f_valid.drop(["Survived"], axis=1), y=f_valid["Survived"])
+        fold_accuracy.append(valid_acc)
+
+    avg = sum(fold_accuracy) / len(fold_accuracy)
+    accuracies.append(avg)
+    # print("Accuracy per fold: ", fold_accuracy, "\n")
+    # print("Average accuracy: ", avg)
+    # print("\n")
+
+# Just to show results conveniently
+df = pd.DataFrame({"Max Depth": depth_range, "Average Accuracy": accuracies})
+df = df[["Max Depth", "Average Accuracy"]]
+# print(df.to_string(index=False))
+
