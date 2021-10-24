@@ -159,3 +159,31 @@ title_and_sex['Sex'] = title_and_sex['Sex'].map( {'female': 0, 'male': 1} ).asty
 # print(title_and_sex[['Title', 'Sex']].groupby(['Title'], as_index=False).agg(['mean', 'count', 'sum']))
 
 
+# Define function to calculate Gini Impurity
+def get_gini_impurity(survived_count, total_count):
+    random_observation_survived_prob = survived_count/total_count
+    random_observation_not_survived_prob = 1 - random_observation_survived_prob
+    mislabelling_survived_prob = random_observation_not_survived_prob * random_observation_survived_prob
+    mislabelling_not_survived_prob = random_observation_survived_prob * random_observation_not_survived_prob
+    gini_impurity = mislabelling_survived_prob + mislabelling_not_survived_prob
+    return gini_impurity
+
+
+gini_impurity_starting_node = get_gini_impurity(342, 891)
+# print(gini_impurity_starting_node)
+
+gini_impurity_men = get_gini_impurity(109, 577)
+# print(gini_impurity_men)
+
+gini_impurity_women = get_gini_impurity(233, 314)
+# print(gini_impurity_women)
+
+# Gini impurity decrease if node is split by Sex
+men_weight = 577 / 891
+women_weight = 314 / 891
+weight_gini_impurity_sex_split = (gini_impurity_men * men_weight) + (gini_impurity_women * women_weight)
+
+sex_gini_decrease = weight_gini_impurity_sex_split - gini_impurity_starting_node
+# print(sex_gini_decrease)
+
+
