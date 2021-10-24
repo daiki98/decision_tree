@@ -264,21 +264,23 @@ submission = pd.DataFrame({
     "Survived": y_pred
 })
 
-submission.to_csv("submission.csv", index=False)
+# submission.to_csv("submission.csv", index=False)
+#
+# # Export our trainded model as a .dot fole
+# with open("tree1.dot", "w") as f:
+#     f = tree.export_graphviz(decision_tree, out_file=f, max_depth=3, impurity=True,
+#                              feature_names=list(train_data.drop(["Survived"], axis=1)), class_names=["Died", "Survived"],
+#                              rounded=True, filled=True)
+#
+# # Convert .dot to .png to allow display in web notebook
+# check_call(["dot", "-Tpng", "tree1.dot", "-o", "tree1.png"])
+#
+# # Annotating chart with PIL
+# img = Image.open("tree1.png")
+# draw = ImageDraw.Draw(img)
+# draw.text((10, 0), "\"Title <= 1.5\" corresponds to \"Mr.\" title", (0, 0, 255))
+# img.save("titanic_decision_tree_depth_3.png")
+# PImage("titanic_decision_tree_depth_3.png")
 
-# Export our trainded model as a .dot fole
-with open("tree1.dot", "w") as f:
-    f = tree.export_graphviz(decision_tree, out_file=f, max_depth=3, impurity=True,
-                             feature_names=list(train_data.drop(["Survived"], axis=1)), class_names=["Died", "Survived"],
-                             rounded=True, filled=True)
-
-# Convert .dot to .png to allow display in web notebook
-check_call(["dot", "-Tpng", "tree1.dot", "-o", "tree1.png"])
-
-# Annotating chart with PIL
-img = Image.open("tree1.png")
-draw = ImageDraw.Draw(img)
-draw.text((10, 0), "\"Title <= 1.5\" corresponds to \"Mr.\" title", (0, 0, 255))
-img.save("titanic_decision_tree_depth_3.png")
-PImage("titanic_decision_tree_depth_3.png")
-
+acc_decision_tree = round(decision_tree.score(x_train, y_train) * 100, 2)
+print("accuracy: " + str(acc_decision_tree) + "%")
