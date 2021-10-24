@@ -260,9 +260,10 @@ decision_tree.fit(x_train, y_train)
 # Predicting results for test dataset
 y_pred = decision_tree.predict(x_test)
 submission = pd.DataFrame({
-    "PassengerId": 0,
+    "PassengerId": full_data[1]["PassengerId"].values,
     "Survived": y_pred
 })
+
 submission.to_csv("submission.csv", index=False)
 
 # Export our trainded model as a .dot fole
