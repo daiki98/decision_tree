@@ -157,3 +157,5 @@ title_and_sex['Sex'] = title_and_sex['Sex'].map( {'female': 0, 'male': 1} ).asty
 
 # Table with 'Sex' distribution grouped by 'Title'
 # print(title_and_sex[['Title', 'Sex']].groupby(['Title'], as_index=False).agg(['mean', 'count', 'sum']))
+
+

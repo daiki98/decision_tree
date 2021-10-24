@@ -25,8 +25,11 @@ Most popular selection measures are following three methods:
    * Gini Index
 
 # What is seaborn?
-* summarized in notion<br>
-https://www.notion.so/seaborn-heatmap-ba13f6064d6f4bd9afee54cf73ffed2f
+* <a href="https://leaf-organ-558.notion.site/seaborn-heatmap-ba13f6064d6f4bd9afee54cf73ffed2f">note</a>
+
+# Gini Impurity
+* <a href="https://leaf-organ-558.notion.site/Gini-Impurity-c65f1286369f4775b4cd01a11dc3e524">note</a>
+
 
 
    
